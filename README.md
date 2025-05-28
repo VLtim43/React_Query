@@ -1,4 +1,4 @@
-# React + TypeScript + Vite + MirageJS + TanStack Query
+# React + TypeScript + TailwindCSS + MirageJS + TanStack Query powered by Vite
 
 CRUD operations:
 GET /items → fetch all items
