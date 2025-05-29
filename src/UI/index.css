@@ -1,1 +1,12 @@
-@import "tailwindcss";
+    @import "tailwindcss";
+
+
+    @theme {
+        --color-*: initial;
+
+        --color-sepia-900: #cda882;
+        --color-sepia-800: #d4b595;
+        --color-sepia-700: #dcc1a7;
+        --color-sepia-600: #e3ceb9;
+        --color-sepia-500: #eadbcb;
+    }
