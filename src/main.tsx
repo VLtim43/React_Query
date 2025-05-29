@@ -1,7 +1,12 @@
+import App from "./App.tsx";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { makeServer } from "./server/server";
 import "./UI/index.css";
-import App from "./App.tsx";
+
+if (import.meta.env.DEV) {
+  makeServer();
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

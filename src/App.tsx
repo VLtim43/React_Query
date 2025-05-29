@@ -1,6 +1,12 @@
 import * as S from "./UI/Layout";
-
+import { useEffect } from "react";
 function App() {
+  useEffect(() => {
+    fetch("/api/books")
+      .then((res) => res.json())
+      .then(console.log);
+  }, []);
+
   return (
     <S.Layout>
       <p className="text-lg">
