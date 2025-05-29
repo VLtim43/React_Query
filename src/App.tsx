@@ -1,8 +1,12 @@
-import { useState } from "react";
+import * as S from "./UI/Layout";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline bg-amber-600">Hello world!</h1>
+    <S.Layout>
+      <p className="text-lg">
+        Welcome to your mock bookstore. Start building features!
+      </p>
+    </S.Layout>
   );
 }
 

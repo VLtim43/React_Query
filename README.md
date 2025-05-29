@@ -22,29 +22,15 @@ Errors:
 404 Not Found
 
 src/
-├── hooks/ # Hooks
-│ ├── books.ts # useBooks(), useBook(), useCreateBook(), etc.
-│ ├── comments.ts # useComments(bookId)
-│...
-│ └── authors.ts etc
+├── hooks/
 │
-├── UI/ # Reusable UI components
+├── server/
+│ └── server.ts
 │
-│
-├── server/ # Mirage JS setup
-│ ├── server.ts # makeServer() as you have it
-│ ├── models/ # Mirage models
-│ │ ├── book.ts
-│ │ └── comment.ts
-│ ├── factories/ # Mirage factories
-│ │ ├── book.ts
-│ │ └── comment.ts
-│ ├── routes/ # Modular route files
-│ ├── books.ts
-│ └── comments.ts
-│
-├── types/ # Shared TS types
+├── types/
 │ └── book.ts
 │
+├── UI/
+│
 ├── App.tsx
-├── main.tsx
+└─ main.tsx
