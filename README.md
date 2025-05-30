@@ -26,10 +26,6 @@ src/
 │
 ├── server/
 │ └── server.ts
-│
-├── types/
-│ └── book.ts
-│
 ├── UI/
 │
 ├── App.tsx

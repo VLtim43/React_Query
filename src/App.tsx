@@ -5,6 +5,10 @@ function App() {
     fetch("/api/books")
       .then((res) => res.json())
       .then(console.log);
+
+    // fetch("/api/authors")
+    //   .then((res) => res.json())
+    //   .then(console.log);
   }, []);
 
   return (

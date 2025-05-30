@@ -13,7 +13,9 @@ export const Layout = ({ children }: Props) => {
         </h1>
       </header>
 
-      <main className="flex-1 max-w-4xl mx-auto w-full p-4">{children}</main>
+      <main className="flex-1 flex items-center justify-center overflow-auto">
+        {children}
+      </main>
 
       <footer className="bg-sepia-500 p-4 text-center text-sm  border-sepia-800">
         Fake Amazon for Books — sepia edition

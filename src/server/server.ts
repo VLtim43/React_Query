@@ -1,54 +1,67 @@
-import { createServer, Model, Factory, Response } from "miragejs";
+import { createServer, Model, Factory, belongsTo, hasMany } from "miragejs";
 import { faker } from "@faker-js/faker";
 
-// --- Define your TS interfaces ---
-export interface Book {
+type Author = {
   id: string;
-  title: string;
-  author: string;
-  publishedYear: number;
-}
+  name: string;
+};
 
 export function makeServer() {
   return createServer({
     models: {
-      book: Model.extend<Partial<Book>>({}),
+      author: Model.extend({
+        books: hasMany(),
+      }),
+      book: Model.extend({
+        author: belongsTo(),
+      }),
     },
 
     factories: {
-      book: Factory.extend({
-        id() {
-          faker.string.ulid();
+      author: Factory.extend({
+        name() {
+          return faker.person.fullName();
         },
+      }),
 
+      book: Factory.extend({
         title() {
           return faker.book.title();
-        },
-
-        author() {
-          return faker.book.author();
-        },
-
-        publishedAt() {
-          return faker.date.between({ from: "1800", to: "2025" });
-        },
-
-        genre() {
-          return faker.book.genre();
-        },
-
-        publisher() {
-          return faker.book.publisher();
-        },
-
-        isbn() {
-          return faker.commerce.isbn();
         },
       }),
     },
 
     seeds(server) {
-      server.createList("book", 20);
+      const authors = server.createList("author", 5);
+      const books = server.createList("book", 10);
+
+      books.forEach((book) => {
+        const randomAuthor = faker.helpers.arrayElement(authors);
+        book.update({ author: randomAuthor });
+      });
+    },
+
+    routes() {
+      this.namespace = "api";
+
+      this.get("/books", (schema) => {
+        return schema.all("book").models.map((book) => {
+          const rest = book.attrs;
+          const author = book.author as Author;
+
+          return {
+            ...rest,
+            author: {
+              id: author.id,
+              name: author.name,
+            },
+          };
+        });
+      });
+
+      this.get("/authors", (schema) => {
+        return schema.all("author");
+      });
     },
   });
 }
