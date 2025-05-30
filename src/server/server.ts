@@ -56,8 +56,8 @@ export function makeServer() {
     },
 
     seeds(server) {
-      const authors = server.createList("author", 5);
-      const genres = server.createList("genre", 6);
+      const authors = server.createList("author", 2);
+      const genres = server.createList("genre", 2);
       const books = server.createList("book", 10);
 
       books.forEach((book) => {
