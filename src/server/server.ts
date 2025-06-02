@@ -1,5 +1,4 @@
 import { createServer, Model, Factory, belongsTo, hasMany } from "miragejs";
-import { randUuid, randFullName, randMovie, randNumber } from "@ngneat/falso";
 import genresData from "./genres.json";
 
 export function makeServer() {
@@ -14,30 +13,12 @@ export function makeServer() {
     },
 
     factories: {
-      author: Factory.extend({
-        id() {
-          return randUuid();
-        },
-        name() {
-          return randFullName();
-        },
-      }),
+      author: Factory.extend({}),
 
-      book: Factory.extend({
-        id() {
-          return randUuid();
-        },
-        title() {
-          return randMovie();
-        },
-        isbn() {
-          return `${randNumber({ min: 1000000000000, max: 9999999999999 })}`;
-        },
-      }),
+      book: Factory.extend({}),
     },
 
     seeds(server) {
-      // Create unique genres from JSON
       genresData.forEach((genre) => {
         server.create("genre", { id: randUuid(), name: genre.name });
       });
