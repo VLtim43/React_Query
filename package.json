@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.8.0",
+    "@ngneat/falso": "^7.3.0",
     "@tailwindcss/vite": "^4.1.8",
     "miragejs": "^0.1.48",
     "react": "^19.1.0",

@@ -1,25 +1,12 @@
 import { createServer, Model, Factory, belongsTo, hasMany } from "miragejs";
-import { faker } from "@faker-js/faker";
-
-type Author = {
-  id: string;
-  name: string;
-};
-
-type Genre = {
-  id: string;
-  name: string;
-};
+import { randUuid, randFullName, randMovie, randNumber } from "@ngneat/falso";
+import genresData from "./genres.json";
 
 export function makeServer() {
   return createServer({
     models: {
-      author: Model.extend({
-        books: hasMany(),
-      }),
-      genre: Model.extend({
-        books: hasMany(),
-      }),
+      author: Model.extend({ books: hasMany() }),
+      genre: Model.extend({ books: hasMany() }),
       book: Model.extend({
         author: belongsTo(),
         genre: belongsTo(),
@@ -29,44 +16,40 @@ export function makeServer() {
     factories: {
       author: Factory.extend({
         id() {
-          return faker.string.alphanumeric({ casing: "lower", length: 8 });
+          return randUuid();
         },
         name() {
-          return faker.person.fullName();
-        },
-      }),
-
-      genre: Factory.extend({
-        id() {
-          return faker.string.alphanumeric({ casing: "lower", length: 8 });
-        },
-        name() {
-          return faker.book.genre();
+          return randFullName();
         },
       }),
 
       book: Factory.extend({
         id() {
-          return faker.string.alphanumeric({ casing: "lower", length: 8 });
+          return randUuid();
         },
         title() {
-          return faker.book.title();
+          return randMovie();
+        },
+        isbn() {
+          return `${randNumber({ min: 1000000000000, max: 9999999999999 })}`;
         },
       }),
     },
 
     seeds(server) {
-      const authors = server.createList("author", 2);
-      const genres = server.createList("genre", 2);
-      const books = server.createList("book", 10);
+      // Create unique genres from JSON
+      genresData.forEach((genre) => {
+        server.create("genre", { id: randUuid(), name: genre.name });
+      });
 
-      books.forEach((book) => {
-        const randomAuthor = faker.helpers.arrayElement(authors);
-        const randomGenre = faker.helpers.arrayElement(genres);
-        book.update({
-          author: randomAuthor,
-          genre: randomGenre,
-        });
+      const authors = server.createList("author", 10);
+      const genres = server.schema.all("genre").models;
+
+      server.createList("book", 20).forEach((book) => {
+        const randomAuthor =
+          authors[Math.floor(Math.random() * authors.length)];
+        const randomGenre = genres[Math.floor(Math.random() * genres.length)];
+        book.update({ author: randomAuthor, genre: randomGenre });
       });
     },
 
@@ -74,36 +57,15 @@ export function makeServer() {
       this.namespace = "api";
 
       this.get("/books", (schema) => {
-        return schema.all("book").models.map((book) => {
-          const { authorId, genreId, ...rest } =
-            book.attrs as typeof book.attrs & {
-              authorId?: string;
-              genreId?: string;
-            };
-
-          const author = book.author as Author;
-          const genre = book.genre as Genre;
-
-          return {
-            ...rest,
-            author: {
-              id: author.id,
-              name: author.name,
-            },
-            genre: {
-              id: genre.id,
-              name: genre.name,
-            },
-          };
-        });
-      });
-
-      this.get("/authors", (schema) => {
-        return schema.all("author");
+        return schema.all("book");
       });
 
       this.get("/genres", (schema) => {
         return schema.all("genre");
+      });
+
+      this.get("/authors", (schema) => {
+        return schema.all("author");
       });
     },
   });

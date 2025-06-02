@@ -1,0 +1,7 @@
+[
+  { "id": "sci-fi", "name": "Science Fiction" },
+  { "id": "romance", "name": "Romance" },
+  { "id": "fantasy", "name": "Fantasy" },
+  { "id": "horror", "name": "Horror" },
+  { "id": "mystery", "name": "Mystery" }
+]
