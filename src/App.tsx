@@ -10,18 +10,26 @@ function App() {
     fetch("/api/books")
       .then((res) => res.json())
       .then(console.log);
+
+    fetch("/api/authors")
+      .then((res) => res.json())
+      .then(console.log);
+
+    fetch("/api/genres")
+      .then((res) => res.json())
+      .then(console.log);
   }, []);
 
   return (
     <S.Layout>
       <div>
-        {/* {books?.map((book) => (
+        {books?.map((book) => (
           <BookCard
             key={book.id}
             title={book.title}
             author={book.author.name}
           />
-        ))} */}
+        ))}
       </div>
     </S.Layout>
   );
