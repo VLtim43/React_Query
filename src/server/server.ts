@@ -1,11 +1,17 @@
 import { createServer, Model, Factory, belongsTo, hasMany } from "miragejs";
+import { faker } from "@faker-js/faker";
 import genresData from "./genres.json";
+import type { Author, Genre, Book } from "./types";
 
 export function makeServer() {
   return createServer({
     models: {
-      author: Model.extend({ books: hasMany() }),
-      genre: Model.extend({ books: hasMany() }),
+      author: Model.extend({
+        books: hasMany(),
+      }),
+      genre: Model.extend({
+        books: hasMany(),
+      }),
       book: Model.extend({
         author: belongsTo(),
         genre: belongsTo(),
@@ -13,24 +19,45 @@ export function makeServer() {
     },
 
     factories: {
-      author: Factory.extend({}),
+      author: Factory.extend({
+        id() {
+          return faker.string.uuid();
+        },
+        name() {
+          return faker.person.fullName();
+        },
+      }),
 
-      book: Factory.extend({}),
+      book: Factory.extend({
+        id() {
+          return faker.string.uuid();
+        },
+        title() {
+          return faker.book.title();
+        },
+      }),
     },
 
     seeds(server) {
-      genresData.forEach((genre) => {
-        server.create("genre", { id: randUuid(), name: genre.name });
+      genresData.forEach((genre: Omit<Genre, "id">) => {
+        server.create("genre", {
+          id: faker.string.uuid(),
+          name: genre.name,
+        });
       });
 
-      const authors = server.createList("author", 10);
+      const authors = server.createList("author", 5);
       const genres = server.schema.all("genre").models;
 
-      server.createList("book", 20).forEach((book) => {
-        const randomAuthor =
-          authors[Math.floor(Math.random() * authors.length)];
-        const randomGenre = genres[Math.floor(Math.random() * genres.length)];
-        book.update({ author: randomAuthor, genre: randomGenre });
+      const books = server.createList("book", 10);
+      books.forEach((book) => {
+        const randomAuthor = faker.helpers.arrayElement(authors);
+        const randomGenre = faker.helpers.arrayElement(genres);
+
+        book.update({
+          author: randomAuthor,
+          genre: randomGenre,
+        });
       });
     },
 
@@ -38,15 +65,34 @@ export function makeServer() {
       this.namespace = "api";
 
       this.get("/books", (schema) => {
-        return schema.all("book");
-      });
+        return schema.all("book").models.map((book) => {
+          const { title } = book.attrs;
+          const author = book.author as Author;
+          const genre = book.genre as Genre;
 
-      this.get("/genres", (schema) => {
-        return schema.all("genre");
+          const bookResponse: Book = {
+            id: book.id as string,
+            title,
+            author: {
+              id: author.id,
+              name: author.name,
+            },
+            genre: {
+              id: genre.id,
+              name: genre.name,
+            },
+          };
+
+          return bookResponse;
+        });
       });
 
       this.get("/authors", (schema) => {
         return schema.all("author");
+      });
+
+      this.get("/genres", (schema) => {
+        return schema.all("genre");
       });
     },
   });
