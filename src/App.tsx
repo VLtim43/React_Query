@@ -9,28 +9,27 @@ function App() {
   useEffect(() => {
     fetch("/api/books")
       .then((res) => res.json())
-      .then(console.log);
-
-    fetch("/api/authors")
-      .then((res) => res.json())
-      .then(console.log);
-
-    fetch("/api/genres")
-      .then((res) => res.json())
-      .then(console.log);
+      .then((data) => {
+        console.log("Fetched books:", data);
+        setBooks(data);
+      });
   }, []);
 
+  // fetch("/api/authors").then((res) => res.json());
+
+  // fetch("/api/genres").then((res) => res.json());
+
+  console.log(books);
   return (
     <S.Layout>
-      <div>
-        {books?.map((book) => (
-          <BookCard
-            key={book.id}
-            title={book.title}
-            author={book.author.name}
-          />
-        ))}
-      </div>
+      {books?.map((book) => (
+        <BookCard
+          key={book.id}
+          title={book.title}
+          author={book.author.name}
+          genre={book.genre.name}
+        />
+      ))}
     </S.Layout>
   );
 }

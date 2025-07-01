@@ -3,5 +3,20 @@
   { "id": "romance", "name": "Romance" },
   { "id": "fantasy", "name": "Fantasy" },
   { "id": "horror", "name": "Horror" },
-  { "id": "mystery", "name": "Mystery" }
+  { "id": "mystery", "name": "Mystery" },
+  { "id": "thriller", "name": "Thriller" },
+  { "id": "historical", "name": "Historical Fiction" },
+  { "id": "non-fiction", "name": "Non-Fiction" },
+  { "id": "biography", "name": "Biography" },
+  { "id": "memoir", "name": "Memoir" },
+  { "id": "self-help", "name": "Self-Help" },
+  { "id": "poetry", "name": "Poetry" },
+  { "id": "drama", "name": "Drama" },
+  { "id": "adventure", "name": "Adventure" },
+  { "id": "dystopian", "name": "Dystopian" },
+  { "id": "crime", "name": "Crime" },
+  { "id": "humor", "name": "Humor" },
+  { "id": "philosophy", "name": "Philosophy" },
+  { "id": "science", "name": "Science" },
+  { "id": "travel", "name": "Travel" }
 ]

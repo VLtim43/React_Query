@@ -39,17 +39,17 @@ export function makeServer() {
     },
 
     seeds(server) {
-      genresData.forEach((genre: Omit<Genre, "id">) => {
+      genresData.forEach((genre) => {
         server.create("genre", {
-          id: faker.string.uuid(),
+          id: genre.id,
           name: genre.name,
         });
       });
 
-      const authors = server.createList("author", 5);
+      const authors = server.createList("author", 200);
       const genres = server.schema.all("genre").models;
 
-      const books = server.createList("book", 10);
+      const books = server.createList("book", 50);
       books.forEach((book) => {
         const randomAuthor = faker.helpers.arrayElement(authors);
         const randomGenre = faker.helpers.arrayElement(genres);
