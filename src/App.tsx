@@ -1,35 +1,24 @@
-import { useEffect, useState } from "react";
-import { BookCard } from "./UI/BookCard";
+import { BooksGrid } from "./UI/BookGrid";
 import * as S from "./UI/Layout";
-import type { Book } from "./types";
+import { ShouldRender } from "./UI/shouldRender";
+import { useFetchBooks } from "./hooks/useFetchBooksDeprecated";
 
 function App() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const { books, loading, error } = useFetchBooks();
 
-  useEffect(() => {
-    fetch("/api/books")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched books:", data);
-        setBooks(data);
-      });
-  }, []);
-
-  // fetch("/api/authors").then((res) => res.json());
-
-  // fetch("/api/genres").then((res) => res.json());
-
-  console.log(books);
   return (
     <S.Layout>
-      {books?.map((book) => (
-        <BookCard
-          key={book.id}
-          title={book.title}
-          author={book.author.name}
-          genre={book.genre.name}
-        />
-      ))}
+      <ShouldRender if={error}>
+        <p>Error loading books: {error?.message}</p>
+      </ShouldRender>
+
+      <ShouldRender if={loading}>
+        <p>Loading books…</p>
+      </ShouldRender>
+
+      <ShouldRender if={books?.length > 0}>
+        <BooksGrid books={books} />
+      </ShouldRender>
     </S.Layout>
   );
 }
