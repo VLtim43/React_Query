@@ -1,10 +1,10 @@
 import { BooksGrid } from "./UI/BookGrid";
 import * as S from "./UI/Layout";
 import { ShouldRender } from "./UI/shouldRender";
-import { useFetchBooks } from "./hooks/useFetchBooksDeprecated";
+import { useFetchBooks } from "./hooks/useFetchBooks";
 
 function App() {
-  const { books, loading, error } = useFetchBooks();
+  const { data: books = [], isLoading, error } = useFetchBooks();
 
   return (
     <S.Layout>
@@ -12,7 +12,7 @@ function App() {
         <p>Error loading books: {error?.message}</p>
       </ShouldRender>
 
-      <ShouldRender if={loading}>
+      <ShouldRender if={isLoading}>
         <p>Loading books…</p>
       </ShouldRender>
 
