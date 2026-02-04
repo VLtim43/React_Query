@@ -1,5 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
+
 function App() {
-  return <></>;
+  const { data, isLoading } = useQuery({
+    queryKey: ["test"],
+    queryFn: () => fetch("/api/test").then((res) => res.json()),
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return <div>"oi"</div>;
 }
 
 export default App;
