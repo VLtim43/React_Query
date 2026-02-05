@@ -8,7 +8,7 @@ function App() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  return <div>"oi"</div>;
+  return <div>{data}</div>;
 }
 
 export default App;
